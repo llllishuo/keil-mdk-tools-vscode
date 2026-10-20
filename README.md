@@ -1,5 +1,8 @@
 # Keil MDK Tools for Visual Studio Code
 
+[![CI](https://github.com/llllishuo/keil-mdk-tools-vscode/actions/workflows/ci.yml/badge.svg)](https://github.com/llllishuo/keil-mdk-tools-vscode/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/llllishuo/keil-mdk-tools-vscode)](https://github.com/llllishuo/keil-mdk-tools-vscode/releases)
+
 把 Arm Keil MDK (µVision) 的工程浏览、编译、下载、代码补全与调试配置搬进 VS Code。
 
 本扩展**不修改 sdk、不复制二进制**，而是直接驱动本机已安装的 Keil MDK：
