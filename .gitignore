@@ -1,0 +1,6 @@
+node_modules/
+out/
+*.vsix
+*.log
+.dsh-project-memory/
+.vscode/

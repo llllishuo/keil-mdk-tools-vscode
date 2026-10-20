@@ -1,0 +1,365 @@
+{
+  "name": "keil-mdk-tools",
+  "displayName": "Keil MDK Tools",
+  "description": "Arm Keil MDK / µVision projects in Visual Studio Code: project tree, native ARMCC5/ARMCLANG6 build engine, UV4 bridge, flash, IntelliSense and Cortex-Debug integration.",
+  "version": "0.1.0",
+  "publisher": "llllishuo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/llllishuo/keil-mdk-tools-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/llllishuo/keil-mdk-tools-vscode/issues"
+  },
+  "homepage": "https://github.com/llllishuo/keil-mdk-tools-vscode#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "icon": "media/icon.png",
+  "categories": [
+    "Programming Languages",
+    "Debuggers",
+    "Other"
+  ],
+  "keywords": [
+    "keil",
+    "mdk",
+    "uvision",
+    "arm",
+    "cortex-m",
+    "armcc",
+    "armclang",
+    "stm32"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:keil.projects",
+    "onCommand:keil.openProject",
+    "onCommand:keil.build",
+    "onCommand:keil.rebuild",
+    "onCommand:keil.clean",
+    "onCommand:keil.flash",
+    "onCommand:keil.debug",
+    "onCommand:keil.selectTarget",
+    "onCommand:keil.generateIntelliSense",
+    "onCommand:keil.createDebugConfig",
+    "onCommand:keil.showCommands",
+    "onCommand:keil.openInUVision",
+    "onCommand:keil.showBuildLog",
+    "workspaceContains:**/*.uvprojx",
+    "workspaceContains:**/*.uvproj"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "keil.openProject",
+        "title": "Open Keil Project...",
+        "category": "Keil"
+      },
+      {
+        "command": "keil.refreshProjects",
+        "title": "Refresh Projects",
+        "category": "Keil",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "keil.build",
+        "title": "Build",
+        "category": "Keil",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "keil.rebuild",
+        "title": "Rebuild",
+        "category": "Keil",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "keil.clean",
+        "title": "Clean",
+        "category": "Keil",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "keil.flash",
+        "title": "Flash / Download",
+        "category": "Keil",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "keil.debug",
+        "title": "Start Debugging",
+        "category": "Keil",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "keil.selectTarget",
+        "title": "Select Active Target",
+        "category": "Keil",
+        "icon": "$(list-selection)"
+      },
+      {
+        "command": "keil.generateIntelliSense",
+        "title": "Generate IntelliSense Configuration (c_cpp_properties.json)",
+        "category": "Keil"
+      },
+      {
+        "command": "keil.createDebugConfig",
+        "title": "Create Debug Configuration (launch.json)",
+        "category": "Keil"
+      },
+      {
+        "command": "keil.showCommands",
+        "title": "Show Resolved Build Commands",
+        "category": "Keil"
+      },
+      {
+        "command": "keil.openInUVision",
+        "title": "Open in uVision",
+        "category": "Keil"
+      },
+      {
+        "command": "keil.showBuildLog",
+        "title": "Show Build Log",
+        "category": "Keil",
+        "icon": "$(output)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "keil",
+          "title": "Keil MDK",
+          "icon": "media/keil.svg"
+        }
+      ]
+    },
+    "views": {
+      "keil": [
+        {
+          "id": "keil.projects",
+          "name": "Projects",
+          "contextualTitle": "Keil MDK Projects"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "keil.projects",
+        "contents": "No Keil project found in this workspace.\n[Open Keil Project...](command:keil.openProject)\n[Refresh](command:keil.refreshProjects)\n\nConfigure the installation folder with the `keil.root` setting if automatic detection fails."
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "keil.build",
+          "when": "view == keil.projects",
+          "group": "navigation@1"
+        },
+        {
+          "command": "keil.rebuild",
+          "when": "view == keil.projects",
+          "group": "navigation@2"
+        },
+        {
+          "command": "keil.clean",
+          "when": "view == keil.projects",
+          "group": "navigation@3"
+        },
+        {
+          "command": "keil.flash",
+          "when": "view == keil.projects",
+          "group": "navigation@4"
+        },
+        {
+          "command": "keil.refreshProjects",
+          "when": "view == keil.projects",
+          "group": "navigation@9"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "keil.build",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "1_build@1"
+        },
+        {
+          "command": "keil.rebuild",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "1_build@2"
+        },
+        {
+          "command": "keil.clean",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "1_build@3"
+        },
+        {
+          "command": "keil.flash",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "2_run@1"
+        },
+        {
+          "command": "keil.debug",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "2_run@2"
+        },
+        {
+          "command": "keil.selectTarget",
+          "when": "view == keil.projects && viewItem == keilTarget",
+          "group": "3_config@1"
+        },
+        {
+          "command": "keil.generateIntelliSense",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "3_config@2"
+        },
+        {
+          "command": "keil.createDebugConfig",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "3_config@3"
+        },
+        {
+          "command": "keil.showCommands",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "3_config@4"
+        },
+        {
+          "command": "keil.openInUVision",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "4_tools@1"
+        },
+        {
+          "command": "keil.showBuildLog",
+          "when": "view == keil.projects && viewItem =~ /^keil(Target|Project)/",
+          "group": "4_tools@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "keil.build",
+          "when": "resourceExtname == .uvprojx",
+          "group": "keil@1"
+        },
+        {
+          "command": "keil.rebuild",
+          "when": "resourceExtname == .uvprojx",
+          "group": "keil@2"
+        },
+        {
+          "command": "keil.clean",
+          "when": "resourceExtname == .uvprojx",
+          "group": "keil@3"
+        },
+        {
+          "command": "keil.flash",
+          "when": "resourceExtname == .uvprojx",
+          "group": "keil@4"
+        },
+        {
+          "command": "keil.openInUVision",
+          "when": "resourceExtname == .uvprojx",
+          "group": "keil@5"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Keil MDK",
+      "properties": {
+        "keil.root": {
+          "type": "string",
+          "default": "",
+          "description": "Keil MDK installation folder (the folder that contains TOOLS.INI and UV4\\UV4.exe), e.g. C:\\Keil_v5. Detected automatically when empty."
+        },
+        "keil.build.engine": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "uv4",
+            "native"
+          ],
+          "enumDescriptions": [
+            "Use the native toolchain when possible, otherwise fall back to UV4.exe.",
+            "Always build through UV4.exe (maximum uVision compatibility, requires uVision).",
+            "Always drive armcc/armclang/armlink directly (no uVision required; RTE component projects are not supported)."
+          ],
+          "default": "auto",
+          "description": "Build engine used for compile/link."
+        },
+        "keil.build.jobs": {
+          "type": "number",
+          "default": 4,
+          "minimum": 1,
+          "maximum": 32,
+          "description": "Number of parallel compile jobs used by the native build engine."
+        },
+        "keil.build.cleanBeforeBuild": {
+          "type": "boolean",
+          "default": false,
+          "description": "Delete output objects before every build (native engine)."
+        },
+        "keil.build.extraDefines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra preprocessor defines appended to every compile command (native engine)."
+        },
+        "keil.build.extraIncludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra include paths appended to every compile command (native engine). Relative paths are resolved against the project folder."
+        },
+        "keil.uv4.path": {
+          "type": "string",
+          "default": "",
+          "description": "Full path to UV4.exe. Detected from keil.root when empty."
+        },
+        "keil.flash.command": {
+          "type": "string",
+          "default": "",
+          "description": "Optional external flash command (e.g. pyocd or STM32CubeProgrammer). Placeholders: {axf} {hex} {bin} {device} {projectDir}. When empty, UV4.exe -f is used."
+        },
+        "keil.intellisense.auto": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically create/update a c_cpp_properties.json entry for the active target when a project is opened."
+        },
+        "keil.debug.serverType": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "pyocd",
+            "jlink",
+            "stlink",
+            "openocd"
+          ],
+          "default": "auto",
+          "description": "Cortex-Debug server type used when generating launch.json ('auto' inspects the uVision debugger driver)."
+        },
+        "keil.tree.autoDiscover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically discover *.uvprojx files in the workspace."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "test": "node --test out/test/core.test.js",
+    "smoke": "node scripts/smoke.js",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}
